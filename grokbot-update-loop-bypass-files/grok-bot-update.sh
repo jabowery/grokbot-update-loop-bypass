@@ -11,8 +11,10 @@ echo "Installed: $CUR   Latest: $VER"
 if [ "$CUR" = "$VER" ]; then echo "Already current."; read -rp "Press Enter to close"; exit 0; fi
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 curl -fL --progress-bar -o "$TMP/grok-bot.deb" "$URL"
-pkill -f grok-bot || true
+pkill -x grok-bot || true; sleep 1
 if command -v pkexec >/dev/null && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then pkexec apt-get install -y "$TMP/grok-bot.deb"; else sudo apt-get install -y "$TMP/grok-bot.deb"; fi
+NEW=$(dpkg-query -W -f='${Version}' grok-bot)
+if [ "$NEW" != "$VER" ]; then echo "Install FAILED: still $NEW"; read -rp "Press Enter to close"; exit 1; fi
 echo "Updated to $VER."
 (nohup grok-bot >/dev/null 2>&1 &) || true
 read -rp "Press Enter to close"
