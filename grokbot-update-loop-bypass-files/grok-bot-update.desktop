@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Update Grok Bot
+Comment=Install the latest Grok Bot .deb from the official feed
+Exec=x-terminal-emulator -e bash -c "$HOME/.local/bin/grok-bot-update.sh"
+Icon=system-software-update
+Terminal=false
+Categories=Utility;
